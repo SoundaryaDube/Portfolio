@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soundarya Dube — AI Automation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0eee8;
+    --muted: #888880;
+    --accent: #7ecfb3;
+    --accent2: #c9a96e;
+    --accent3: #9b8ecf;
+    --glow: rgba(126,207,179,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  #cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(126,207,179,0.4); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+    transform: translate(-50%, -50%);
+  }
+  body:hover #cursor { opacity: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+  .nav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-size: 1.4rem;
+    color: var(--accent); letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 3rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+  }
+  .hero-orb {
+    position: absolute; width: 700px; height: 700px;
+    border-radius: 50%; filter: blur(120px);
+    background: radial-gradient(circle, rgba(126,207,179,0.08) 0%, rgba(155,142,207,0.05) 50%, transparent 70%);
+    top: -200px; right: -200px; pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-tag::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--accent);
+  }
+  h1.hero-name {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  h1.hero-name span.italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--accent);
+  }
+  .hero-desc {
+    max-width: 520px; margin-top: 2.5rem;
+    font-size: 1rem; line-height: 1.75;
+    color: var(--muted);
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 3rem; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 2rem; font-size: 0.82rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; font-family: 'Syne', sans-serif;
+    font-weight: 600; transition: all 0.25s ease; cursor: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #0a0a0f;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border2);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-scroll {
+    position: absolute; bottom: 3rem; left: 3rem;
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 0.75rem;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .scroll-line {
+    width: 48px; height: 1px; background: var(--muted);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%;
+    height: 100%; background: var(--accent);
+    animation: scanline 2s ease infinite;
+  }
+  .hero-stats {
+    position: absolute; bottom: 3rem; right: 3rem;
+    display: flex; gap: 3rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat { text-align: right; }
+  .stat-num {
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--text);
+  }
+  .stat-label {
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-top: 0.2rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* SECTION COMMON */
+  section { padding: 7rem 3rem; }
+  .section-header {
+    display: flex; align-items: center; gap: 1.5rem; margin-bottom: 4rem;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); letter-spacing: 0.12em;
+  }
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .section-line {
+    flex: 1; height: 1px; background: var(--border);
+    max-width: 300px;
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+  .exp-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem; position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0; background: var(--accent);
+    transition: height 0.4s ease;
+  }
+  .exp-card:hover { border-color: var(--border2); }
+  .exp-card:hover::before { height: 100%; }
+  .exp-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .exp-role { font-size: 1.2rem; font-weight: 700; }
+  .exp-company {
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    color: var(--accent); letter-spacing: 0.05em;
+  }
+  .exp-date {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--muted); letter-spacing: 0.08em;
+    background: var(--bg3); padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border);
+  }
+  .exp-bullets { margin-top: 1.5rem; list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-bullets li {
+    font-size: 0.9rem; color: var(--muted); line-height: 1.6;
+    padding-left: 1.25rem; position: relative;
+  }
+  .exp-bullets li::before {
+    content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.65rem; top: 0.15rem;
+  }
+  .exp-stack {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .tag:hover { border-color: var(--accent3); color: var(--accent3); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5px; background: var(--border);
+  }
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .project-card:hover { background: var(--bg2); }
+  .project-num {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--border2); letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+  }
+  .project-icon {
+    width: 48px; height: 48px; margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    font-size: 1.4rem;
+  }
+  .project-name {
+    font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .project-desc {
+    font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .project-link {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 0.85rem; }
+  .project-accent {
+    position: absolute; top: 0; right: 0;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle at top right, var(--glow), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--bg2); }
+  .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+  .skill-group-title {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    color: var(--accent2); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .skill-group-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .skill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-item {
+    font-size: 0.82rem; padding: 0.4rem 1rem;
+    border: 1px solid var(--border); color: var(--muted);
+    transition: all 0.2s; cursor: default;
+  }
+  .skill-item:hover { color: var(--text); border-color: var(--border2); background: var(--bg3); }
+
+  /* EDUCATION */
+  .edu-card {
+    border: 1px solid var(--border); padding: 2.5rem;
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    transition: border-color 0.3s;
+  }
+  .edu-card:hover { border-color: var(--border2); }
+  .edu-year {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--muted); letter-spacing: 0.1em; min-width: 90px;
+  }
+  .edu-degree { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .edu-school { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .edu-detail { font-size: 0.85rem; color: var(--muted); }
+  .gpa-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    margin-top: 0.75rem; padding: 0.35rem 0.85rem;
+    background: var(--bg3); border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent2);
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--bg);
+    text-align: center; padding: 8rem 3rem;
+  }
+  .contact-label {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .contact-heading {
+    font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1;
+    margin-bottom: 2.5rem;
+  }
+  .contact-heading em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--accent);
+  }
+  .contact-links {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;
+    margin-top: 3.5rem;
+  }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.8rem 1.75rem;
+    border: 1px solid var(--border); color: var(--muted);
+    text-decoration: none; font-size: 0.82rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    transition: all 0.25s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-email {
+    font-size: 1rem; color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.08em;
+  }
+  .footer-made {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+  .footer-made span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scanline {
+    0% { left: -100%; } 100% { left: 100%; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    animation: pulse 1.8s ease infinite;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* Marquee ticker */
+  .ticker-wrap {
+    overflow: hidden; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.1rem 0; background: var(--bg3);
+  }
+  .ticker {
+    display: flex; gap: 3rem;
+    animation: ticker 25s linear infinite;
+    width: max-content;
+  }
+  .ticker-item {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .ticker-item::after { content: '◆'; color: var(--accent); font-size: 0.5rem; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav id="navbar">
+  <div class="nav-logo">Soundarya Dube</div>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb"></div>
+
+  <div class="hero-tag">
+    <span class="live-dot"></span>
+    AI Automation Engineer · Currently at Qumin.ai
+  </div>
+
+  <h1 class="hero-name">
+    Building<br>
+    <span class="italic">Intelligent</span><br>
+    Systems
+  </h1>
+
+  <p class="hero-desc">
+    CS undergrad at VIT Bhopal with a specialization in Health Informatics.
+    I craft scalable ML pipelines, evaluate Vision-Language Models, and turn unstructured data into structured insight.
+  </p>
+
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects →</a>
+    <a href="mailto:soundaryadube981@gmail.com" class="btn btn-outline">Get In Touch</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+
+
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">Python</div>
+    <div class="ticker-item">Machine Learning</div>
+    <div class="ticker-item">Vision-Language Models</div>
+    <div class="ticker-item">Async Pipelines</div>
+    <div class="ticker-item">Computer Vision</div>
+    <div class="ticker-item">NLP</div>
+    <div class="ticker-item">Deep Learning</div>
+    <div class="ticker-item">AI Evaluation</div>
+    <div class="ticker-item">Health Informatics</div>
+    <div class="ticker-item">QA Automation</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item">Python</div>
+    <div class="ticker-item">Machine Learning</div>
+    <div class="ticker-item">Vision-Language Models</div>
+    <div class="ticker-item">Async Pipelines</div>
+    <div class="ticker-item">Computer Vision</div>
+    <div class="ticker-item">NLP</div>
+    <div class="ticker-item">Deep Learning</div>
+    <div class="ticker-item">AI Evaluation</div>
+    <div class="ticker-item">Health Informatics</div>
+    <div class="ticker-item">QA Automation</div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="exp-card reveal">
+    <div class="exp-top">
+      <div>
+        <div class="exp-role">AI Automation Engineer</div>
+        <div class="exp-company">Qumin.ai</div>
+      </div>
+      <div class="exp-date">Feb 2026 — Present</div>
+    </div>
+    <ul class="exp-bullets">
+      <li>Built scalable async Python pipelines using asyncio and aiohttp for large-scale web scraping and automation.</li>
+      <li>Integrated Google Gemini 2.0 Flash for extracting structured insights from unstructured HTML content.</li>
+      <li>Developed automated evaluation systems for Vision-Language Models (Claude Sonnet, UI-TARS) focused on GUI interaction tasks.</li>
+      <li>Implemented rate-limit handling, concurrency control, and retry mechanisms using aiolimiter and exponential backoff.</li>
+      <li>Designed spatial consensus logic using clustering and weighted voting for accurate UI element detection.</li>
+      <li>Executed functional, regression, smoke, UI, and cross-browser testing to ensure product stability.</li>
+    </ul>
+    <div class="exp-stack">
+      <span class="tag">Python</span>
+      <span class="tag">Asyncio</span>
+      <span class="tag">aiohttp</span>
+      <span class="tag">Gemini API</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">VLMs</span>
+      <span class="tag">AI Evaluation</span>
+      <span class="tag">QA Automation</span>
+      <span class="tag">Machine Learning</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-accent"></div>
+      <div class="project-num">001</div>
+      <div class="project-icon">💊</div>
+      <div class="project-name">Healthcare Prescription Decoding</div>
+      <p class="project-desc">
+        NLP system that converts handwritten/printed prescription images into structured medical text — extracting medicines, dosages, and clinical instructions with high accuracy.
+      </p>
+      <div class="project-tech">
+        <span class="tag">Python</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">spaCy</span>
+        <span class="tag">Scikit-learn</span>
+      </div>
+      <a href="https://github.com/SoundaryaDube" target="_blank" class="project-link">GitHub →</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-accent" style="background: radial-gradient(circle at top right, rgba(155,142,207,0.12), transparent 70%);"></div>
+      <div class="project-num">002</div>
+      <div class="project-icon">🔬</div>
+      <div class="project-name">Surgical Instrument Segmentation</div>
+      <p class="project-desc">
+        U-Net based deep learning model for real-time segmentation of surgical instruments, paired with an interactive Streamlit app for live visualization and deployment.
+      </p>
+      <div class="project-tech">
+        <span class="tag">TensorFlow</span>
+        <span class="tag">Keras</span>
+        <span class="tag">U-Net</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">Streamlit</span>
+      </div>
+      <a href="https://github.com/SoundaryaDube" target="_blank" class="project-link">GitHub →</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-accent" style="background: radial-gradient(circle at top right, rgba(201,169,110,0.1), transparent 70%);"></div>
+      <div class="project-num">003</div>
+      <div class="project-icon">🫀</div>
+      <div class="project-name">ECG-Based Health Risk Analysis</div>
+      <p class="project-desc">
+        ML pipeline for ECG arrhythmia classification using advanced feature engineering. Achieved 94.22% accuracy with ensemble models including Random Forest and LightGBM.
+      </p>
+      <div class="project-tech">
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">LightGBM</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">NumPy</span>
+        <span class="tag">Streamlit</span>
+      </div>
+      <a href="https://github.com/SoundaryaDube" target="_blank" class="project-link">GitHub →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Skills</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-container">
+    <div class="reveal">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-list">
+        <span class="skill-item">Python</span>
+        <span class="skill-item">SQL</span>
+        <span class="skill-item">C++</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="skill-group-title">ML / AI</div>
+      <div class="skill-list">
+        <span class="skill-item">TensorFlow</span>
+        <span class="skill-item">Keras</span>
+        <span class="skill-item">Scikit-learn</span>
+        <span class="skill-item">LightGBM</span>
+        <span class="skill-item">U-Net</span>
+        <span class="skill-item">VLMs</span>
+        <span class="skill-item">AI Evaluation</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="skill-group-title">Data &amp; NLP</div>
+      <div class="skill-list">
+        <span class="skill-item">Pandas</span>
+        <span class="skill-item">NumPy</span>
+        <span class="skill-item">spaCy</span>
+        <span class="skill-item">OpenCV</span>
+        <span class="skill-item">Gemini API</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="skill-group-title">Async &amp; Backend</div>
+      <div class="skill-list">
+        <span class="skill-item">Asyncio</span>
+        <span class="skill-item">aiohttp</span>
+        <span class="skill-item">aiolimiter</span>
+        <span class="skill-item">Web Scraping</span>
+        <span class="skill-item">Streamlit</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="skill-group-title">Testing &amp; QA</div>
+      <div class="skill-list">
+        <span class="skill-item">Functional Testing</span>
+        <span class="skill-item">Regression</span>
+        <span class="skill-item">Smoke Testing</span>
+        <span class="skill-item">Cross-browser</span>
+        <span class="skill-item">QA Automation</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="skill-group-title">Tools</div>
+      <div class="skill-list">
+        <span class="skill-item">Git</span>
+        <span class="skill-item">GitHub</span>
+        <span class="skill-item">VS Code</span>
+        <span class="skill-item">Jupyter</span>
+        <span class="skill-item">Codeforces</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="edu-card reveal">
+    <div class="edu-year">2022 — 2026</div>
+    <div>
+      <div class="edu-degree">B.Tech in Computer Science Engineering</div>
+      <div class="edu-school">Vellore Institute of Technology (VIT), Bhopal</div>
+      <div class="edu-detail">Specialization in Health Informatics</div>
+      <div class="gpa-badge">★ 8.36 CGPA</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-label">Let's collaborate</div>
+  <h2 class="contact-heading">
+    Have an <em>idea?</em><br>Let's build it.
+  </h2>
+  <p class="contact-email">soundaryadube981@gmail.com</p>
+  <p style="color: var(--muted); font-size: 0.9rem; max-width: 480px; margin: 0 auto; line-height: 1.7;">
+    Open to ML engineering roles, research collaborations, and interesting problems at the intersection of AI and healthcare.
+  </p>
+
+  <div class="contact-links">
+    <a href="mailto:soundaryadube981@gmail.com" class="contact-link">✉ Email</a>
+    <a href="https://www.linkedin.com/in/soundarya-dube-023172251/" target="_blank" class="contact-link">in LinkedIn</a>
+    <a href="https://github.com/SoundaryaDube" target="_blank" class="contact-link">⌥ GitHub</a>
+    <a href="https://codeforces.com/profile/Soundarya_Dube" target="_blank" class="contact-link"># Codeforces</a>
+    <a href="https://youtu.be/KgYlrpn2zAU?si=wfaHPHbW9NHoi2fy" target="_blank" class="contact-link">▶ Demo</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 Soundarya Dube. All rights reserved.</div>
+  <div class="footer-made">Built with <span>♥</span> in Udaipur, Rajasthan</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .exp-card, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+      cursor.style.opacity = '0.5';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      cursor.style.opacity = '1';
+    });
+  });
+
+  // Scroll nav
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
